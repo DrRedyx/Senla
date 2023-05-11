@@ -14,8 +14,10 @@ import org.springframework.stereotype.Repository;
 public interface MessagesRepo extends JpaRepository<Messages, Integer> {
 
   @Query(value = "SELECT * FROM messages "
-                 + "WHERE create_person_id = ?1 "
-                 + "AND recipient_person_id = ?2 "
+                 + "WHERE (create_person_id = ?1 "
+                 + "AND recipient_person_id = ?2) "
+                 + "OR (create_person_id = ?2 "
+                 + "AND recipient_person_id = ?1) "
                  + "ORDER BY create_at", nativeQuery = true)
   List<Messages> findChat(int createPersonId, int recipientPersonId);
 

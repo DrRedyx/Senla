@@ -44,6 +44,7 @@ public class MessageServiceImpl implements MessageService {
     message.setCreateAt(LocalDateTime.now());
     message.setPerson(person);
     message.setRecipientPersonId(recipientPersonId);
+    message.setIsRead(false);
     messagesRepo.save(message);
     return messageMapper.toDTO(message);
   }
@@ -52,7 +53,7 @@ public class MessageServiceImpl implements MessageService {
   public List<MessageDTO> getAllMyNewMessages(String username) {
     int recipientPersonId = personRepo.findByEmail(username).get().getId();
     List<Messages> newMessages = messagesRepo.findAllMyNewMessages(recipientPersonId);
-    if (newMessages == null) {
+    if (newMessages.isEmpty()) {
       logger.warn("Don`t new message");
       return new ArrayList<>();
     }

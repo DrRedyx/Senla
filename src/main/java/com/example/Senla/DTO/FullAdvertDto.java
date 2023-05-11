@@ -12,7 +12,7 @@ public class FullAdvertDto {
 
   private String ownerLastName;
 
-  private String name;
+  private String title;
 
   private String description;
 
