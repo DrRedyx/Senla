@@ -11,6 +11,7 @@ import com.example.Senla.DTO.ShortAdvertDTO;
 import com.example.Senla.Entity.Advert;
 import com.example.Senla.Entity.Category;
 import com.example.Senla.Entity.Person;
+import com.example.Senla.Exception.AccessDenied;
 import com.example.Senla.Exception.AdvertNotFoundException;
 import com.example.Senla.Exception.UserNotFoundException;
 import com.example.Senla.Mapper.AdvertMapper;
@@ -49,7 +50,7 @@ public class AdvertServiceImpl implements AdvertService {
   public void saveAdvert(AdvertDTO advertDTO, String username) {
     logger.info("Save advert");
     Advert saveAdvert = advertMapper.createAdvertDTOToEntity(advertDTO);
-    Person person = personRepo.findByEmail(username).get();
+    Person person = personRepo.findByUsername(username).get();
     String categoryName = advertDTO.getCategory();
     saveAdvert.setActual(true);
     saveAdvert.setPerson(person);
@@ -59,7 +60,7 @@ public class AdvertServiceImpl implements AdvertService {
 
   @Override
   public void updateAdvert(int id, AdvertDTO advertDTO, String username) {
-    Advert updateAdvert = advertRepo.findById(id).orElseThrow(RuntimeException::new);
+    Advert updateAdvert = advertRepo.findById(id).orElseThrow(() -> new AdvertNotFoundException("Advert not found"));
     if (username.equals(updateAdvert.getPerson().getUsername())) {
       logger.info("Update advert");
       updateAdvert.setPrice(advertDTO.getPrice());
@@ -70,8 +71,7 @@ public class AdvertServiceImpl implements AdvertService {
       advertRepo.save(updateAdvert);
     }
     else {
-      logger.warn("Don't your Advert");
-      throw new UserNotFoundException("Это не ваше объявление");
+      throw new AccessDenied("Это не ваше объявление");
     }
   }
 
@@ -90,55 +90,52 @@ public class AdvertServiceImpl implements AdvertService {
 
   @Override
   public void deleteAdvert(int id, String username) {
-    Advert advert = advertRepo.findById(id).orElseThrow(RuntimeException::new);
+    Advert advert = advertRepo.findById(id).orElseThrow(() -> new AdvertNotFoundException("Advert not found"));
     if (advert.getPerson().getUsername().equals(username)) {
       advertRepo.deleteById(id);
     }
     else {
-      logger.warn("Don't find Advert");
-      throw new AdvertNotFoundException("Don't find Advert");
+      throw new AccessDenied("Это не ваше объявление");
     }
   }
 
   @Override
-  public FullAdvertDto getAdvert(int id) {
+  public FullAdvertDto getAdvert(int id){
+    Advert advert = advertRepo.findById(id).orElseThrow(() -> new AdvertNotFoundException("Advert not found"));
     logger.info("Get Advert");
-    Advert advert = advertRepo.findById(id).orElseThrow(RuntimeException::new);
     return advertMapper.entityToFullAdvertDTO(advert);
   }
 
   @Override
   public void saleAdvert(int id, String username) {
-    Advert advert = advertRepo.findById(id).orElseThrow(RuntimeException::new);
+    Advert advert = advertRepo.findById(id).orElseThrow(() -> new AdvertNotFoundException("Advert not found"));
     if (!advert.getPerson().getUsername().equals(username)) {
       logger.info("Thank`s");
       advert.setSale(true);
       advertRepo.save(advert);
     }
     else {
-      logger.warn("Don't buy your Advert");
-      throw new UserNotFoundException("Don't find Advert");
+      throw new AccessDenied("Это не ваше объявление");
     }
   }
 
   @Override
   public void paidAdvertToTop(int id, String username) {
-    Advert advert = advertRepo.findById(id).orElseThrow(RuntimeException::new);
+    Advert advert = advertRepo.findById(id).orElseThrow(() -> new AdvertNotFoundException("Advert not found"));
     if (advert.getPerson().getUsername().equals(username)) {
       logger.info("Thank`s");
       advert.setPaid(true);
       advertRepo.save(advert);
     }
     else {
-      logger.warn("Don't find Advert");
-      throw new AdvertNotFoundException("Don't find Advert");
+      throw new AccessDenied("Это не ваше объявление");
     }
   }
 
   @Override
   public List<ShortAdvertDTO> getAllMyAdvert(String username) {
     logger.info("Get my adverts");
-    Person person = personRepo.findByEmail(username).get();
+    Person person = personRepo.findByUsername(username).get();
     List<Advert> advertList = advertRepo.getAllByPersonId(person.getId());
     if (advertList == null) {
       throw new AdvertNotFoundException("У вас еще нет объявлений");

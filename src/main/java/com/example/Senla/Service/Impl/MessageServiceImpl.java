@@ -8,6 +8,7 @@ import com.example.Senla.DTO.MessageDTO;
 import com.example.Senla.DTO.SendMessageDTO;
 import com.example.Senla.Entity.Messages;
 import com.example.Senla.Entity.Person;
+import com.example.Senla.Exception.AccessDenied;
 import com.example.Senla.Exception.UserNotFoundException;
 import com.example.Senla.Mapper.MessageMapper;
 import com.example.Senla.Repository.MessagesRepo;
@@ -39,7 +40,7 @@ public class MessageServiceImpl implements MessageService {
   public MessageDTO sendMessage(String createPerson, int recipientPersonId,
       SendMessageDTO sendMessageDTO) {
     logger.info("Send message");
-    Person person = personRepo.findByEmail(createPerson).get();
+    Person person = personRepo.findByUsername(createPerson).get();
     Messages message = messageMapper.toEntity(sendMessageDTO);
     message.setCreateAt(LocalDateTime.now());
     message.setPerson(person);
@@ -51,7 +52,7 @@ public class MessageServiceImpl implements MessageService {
 
   @Override
   public List<MessageDTO> getAllMyNewMessages(String username) {
-    int recipientPersonId = personRepo.findByEmail(username).get().getId();
+    int recipientPersonId = personRepo.findByUsername(username).get().getId();
     List<Messages> newMessages = messagesRepo.findAllMyNewMessages(recipientPersonId);
     if (newMessages.isEmpty()) {
       logger.warn("Don`t new message");
@@ -66,9 +67,9 @@ public class MessageServiceImpl implements MessageService {
   @Override
   public MessageDTO getMessage(int id, String username) {
     Messages messages = messagesRepo.findById(id).orElseThrow(RuntimeException::new);
-    if (personRepo.findByEmail(username).get().getId() != messages.getRecipientPersonId()) {
+    if (personRepo.findByUsername(username).get().getId() != messages.getRecipientPersonId()) {
       logger.error("It`s not your message");
-      throw new UserNotFoundException("It`s not your message");
+      throw new AccessDenied("It`s not your message");
     }
     logger.info("Get and read message");
     messages.setIsRead(true);

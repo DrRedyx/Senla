@@ -7,6 +7,8 @@ import java.util.List;
 import com.example.Senla.DTO.AddCommentDTO;
 import com.example.Senla.DTO.CommentDTO;
 import com.example.Senla.Entity.Comments;
+import com.example.Senla.Exception.AccessDenied;
+import com.example.Senla.Exception.AdvertNotFoundException;
 import com.example.Senla.Exception.UserNotFoundException;
 import com.example.Senla.Mapper.CommentMapper;
 import com.example.Senla.Repository.AdvertRepo;
@@ -48,7 +50,7 @@ public class CommentServiceImpl implements CommentService {
   }
   @Override
   public CommentDTO updateComment(int commentId, AddCommentDTO addCommentDTO, String username) {
-    Comments comments = commentsRepo.findById(commentId).orElseThrow(RuntimeException::new);
+    Comments comments = commentsRepo.findById(commentId).orElseThrow(() -> new AdvertNotFoundException("Не найден комментарий"));
     if (comments.getPerson().getUsername().equals(username)) {
       logger.info("update my comment");
       comments = commentMapper.toEntity(addCommentDTO);
@@ -57,18 +59,17 @@ public class CommentServiceImpl implements CommentService {
       return commentMapper.toDTO(comments);
     }
     else {
-      logger.warn("Don't your comment");
-      throw new UserNotFoundException("Это не ваш комментарий");
+      throw new AccessDenied("Это не ваш комментарий");
     }
   }
 
   @Override
   public List<CommentDTO> getAllMyComments(String username) {
     logger.info("Get All my comments");
-    int personId = personRepo.findByEmail(username).get().getId();
+    int personId = personRepo.findByUsername(username).get().getId();
     List<Comments> commentsList = commentsRepo.findByPersonId(personId);
     if (commentsList == null) {
-      throw new RuntimeException();
+      return new ArrayList<>();
     }
     else {
       return commentMapper.toListDTO(commentsList);
@@ -79,7 +80,7 @@ public class CommentServiceImpl implements CommentService {
   public CommentDTO addComment(int advertId, AddCommentDTO addCommentDTO, String username) {
     logger.info("Add comment");
     Comments comments = commentMapper.toEntity(addCommentDTO);
-    int personId = personRepo.findByEmail(username).get().getId();
+    int personId = personRepo.findByUsername(username).get().getId();
     comments.setAdvert(advertRepo.findById(advertId).get());
     comments.setPerson(personRepo.findById(personId).get());
     comments.setCreateAt(LocalDateTime.now());
@@ -102,14 +103,13 @@ public class CommentServiceImpl implements CommentService {
 
   @Override
   public void deleteComment(int commentId, String username) {
-    Comments comment = commentsRepo.findById(commentId).orElseThrow(RuntimeException::new);
+    Comments comment = commentsRepo.findById(commentId).orElseThrow(() -> new AdvertNotFoundException("Не найден комментарий"));
     if (comment.getPerson().getUsername().equals(username)) {
       logger.info("Delete comment");
       commentsRepo.deleteById(commentId);
     }
     else {
-      logger.warn("Don't your comment");
-      throw new UserNotFoundException("Это не ваш комментарий");
+      throw new AccessDenied("Это не ваш комментарий");
     }
   }
 

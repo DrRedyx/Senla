@@ -5,6 +5,6 @@ package com.example.Senla.Exception;
  */
 public class UserIsAlreadyExists extends RuntimeException {
   public UserIsAlreadyExists(String exception) {
-
+    super(exception);
   }
 }

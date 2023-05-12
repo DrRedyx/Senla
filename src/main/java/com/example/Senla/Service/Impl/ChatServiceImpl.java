@@ -34,7 +34,7 @@ public class ChatServiceImpl implements ChatService {
   private final PersonRepo personRepo;
   @Override
   public List<MessageDTO> getMessagesByTwoPerson(String createPerson, int recipientPersonId) {
-    Person person = personRepo.findByEmail(createPerson).get();
+    Person person = personRepo.findByUsername(createPerson).get();
     logger.info("Chat with 2 persons");
     List<Messages> messagesList = messagesRepo.findChat(person.getId(), recipientPersonId);
     if (messagesList != null) {

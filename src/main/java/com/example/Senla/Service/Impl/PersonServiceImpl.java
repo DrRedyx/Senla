@@ -38,7 +38,7 @@ public class PersonServiceImpl implements PersonService {
 
   @Override
   public PersonDTO updatePerson(String username, UpdatePersonDTO personDTO) {
-    Person person = personRepo.findByEmail(username).orElseThrow(() -> new UserNotFoundException("User not found"));
+    Person person = personRepo.findByUsername(username).orElseThrow(() -> new UserNotFoundException("User not found"));
     logger.info("update person");
     person.setFirstName(personDTO.getFirstName());
     person.setLastName(personDTO.getLastName());
@@ -55,7 +55,7 @@ public class PersonServiceImpl implements PersonService {
   @Override
   public PersonDTO getMe(String username) {
     logger.info("Get me");
-    return personMapper.toDTO(personRepo.findByEmail(username).get());
+    return personMapper.toDTO(personRepo.findByUsername(username).get());
   }
 
   @Override

@@ -28,7 +28,7 @@ public class AuthController {
   @PostMapping("/register")
   public ResponseEntity<String> registration(@RequestBody RegisterDTO registerDTO) {
     if (securityService.register(registerDTO)) {
-      String token = jwtUtil.generateAccessToken(registerDTO.getEmail());
+      String token = jwtUtil.generateAccessToken(registerDTO.getUsername());
       return ResponseEntity.ok(token);
     }
     else {

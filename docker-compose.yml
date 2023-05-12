@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+  app:
+    container_name: springboot-postgresql
+    image: springboot-postgresql
+    build: ./
+    ports:
+        - "8080:8080"
+    depends_on:
+      - postgresqlavito
+
+  postgresqlavito:
+    image: 'postgres:13.1-alpine'
+    container_name: db
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=avito_db
+      - POSTGRES_PASSWORD=Redyx123
+      - POSTGRES_DB=avitooo

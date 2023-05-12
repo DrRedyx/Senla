@@ -5,6 +5,6 @@ package com.example.Senla.Exception;
  */
 public class DontOwnerException extends RuntimeException{
   public DontOwnerException(String exception) {
-
+    super(exception);
   }
 }
