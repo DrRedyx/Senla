@@ -18,7 +18,6 @@ public interface MessageMapper {
 
   Messages toEntity(SendMessageDTO sendMessageDTO);
 
-  @Mapping(source = "person.email", target = "authorUsername")
   MessageDTO toDTO(Messages messages);
 
   List<MessageDTO> toListDTO(List<Messages> messagesList);

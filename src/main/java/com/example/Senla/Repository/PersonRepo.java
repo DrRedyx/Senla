@@ -14,7 +14,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface PersonRepo extends JpaRepository<Person, Integer> {
 
-  Optional<Person> findByEmail(String email);
+  Optional<Person> findByUsername(String email);
 
   @Query(value = "SELECT * FROM person", nativeQuery = true)
   List<Person> findAllBy();

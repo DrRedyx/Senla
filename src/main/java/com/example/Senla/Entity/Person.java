@@ -26,8 +26,8 @@ public class Person implements UserDetails {
   @Column(name = "id")
   private Integer id;
 
-  @Column(name = "email")
-  private String email;
+  @Column(name = "username")
+  private String username;
 
   @Column(name = "first_name")
   private String firstName;
@@ -54,7 +54,7 @@ public class Person implements UserDetails {
 
   @Override
   public String getUsername() {
-    return email;
+    return username;
   }
 
   @Override
