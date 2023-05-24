@@ -1,6 +1,7 @@
 package com.example.Senla.DTO;
 
 import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 /**
@@ -9,12 +10,12 @@ import lombok.Data;
 @Data
 public class AdvertDTO {
 
-  public String title;
+  private String title;
 
-  @Max(value = 300)
-  public String description;
+  @Size(max = 300)
+  private String description;
 
-  public String category;
+  private String category;
 
-  public int price;
+  private int price;
 }
