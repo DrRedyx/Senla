@@ -19,6 +19,7 @@ import com.example.Senla.Repository.AdvertRepo;
 import com.example.Senla.Repository.PersonRepo;
 import com.example.Senla.Service.AdvertService;
 import com.example.Senla.Service.CategoryService;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,23 +29,19 @@ import org.springframework.stereotype.Service;
  * @author Ilyas Nigamatullin
  */
 @Service
+@RequiredArgsConstructor
 public class AdvertServiceImpl implements AdvertService {
 
   Logger logger = LoggerFactory.getLogger(AdvertServiceImpl.class);
 
-  private final AdvertRepo advertRepo;
-  private final AdvertMapper advertMapper;
-  private final CategoryService categoryService;
-  private final PersonRepo personRepo;
-
   @Autowired
-  public AdvertServiceImpl(AdvertRepo advertRepo, AdvertMapper advertMapper, CategoryService categoryService, PersonRepo personRepo) {
-    this.advertMapper = advertMapper;
-    this.advertRepo = advertRepo;
-    this.categoryService = categoryService;
-    this.personRepo = personRepo;
-  }
-
+  private final AdvertRepo advertRepo;
+  @Autowired
+  private final AdvertMapper advertMapper;
+  @Autowired
+  private final CategoryService categoryService;
+  @Autowired
+  private final PersonRepo personRepo;
 
   @Override
   public void saveAdvert(AdvertDTO advertDTO, String username) {
