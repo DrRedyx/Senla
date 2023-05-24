@@ -27,6 +27,6 @@ public class BuyTopController {
   public ResponseEntity<?> buyAdvertToTop(@PathVariable("advert_id") int advertId) {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     advertService.paidAdvertToTop(advertId, authentication.getName());
-    return ResponseEntity.ok("Спасибо за покупку продвижения");
+    return ResponseEntity.ok().build();
   }
 }

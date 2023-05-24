@@ -49,8 +49,7 @@ public class AdvertController {
   public ResponseEntity<?> deleteAdvert(@PathVariable int id) {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     advertService.deleteAdvert(id, authentication.getName());
-    return ResponseEntity.ok("Объявление успешно удалено");
-  }
+    return ResponseEntity.ok().build();  }
 
   @GetMapping("/my")
   public ResponseEntity<List<ShortAdvertDTO>> getAllMyAdverts() {
