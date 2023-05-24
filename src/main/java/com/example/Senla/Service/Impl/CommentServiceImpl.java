@@ -19,6 +19,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Ilyas Nigamatullin
@@ -48,6 +49,8 @@ public class CommentServiceImpl implements CommentService {
     this.advertRepo = advertRepo;
     this.personRepo = personRepo;
   }
+
+  @Transactional
   @Override
   public CommentDTO updateComment(int commentId, AddCommentDTO addCommentDTO, String username) {
     Comments comments = commentsRepo.findById(commentId).orElseThrow(() -> new AdvertNotFoundException("Не найден комментарий"));
@@ -63,6 +66,7 @@ public class CommentServiceImpl implements CommentService {
     }
   }
 
+  @Transactional(readOnly = true)
   @Override
   public List<CommentDTO> getAllMyComments(String username) {
     logger.info("Get All my comments");
@@ -76,6 +80,7 @@ public class CommentServiceImpl implements CommentService {
     }
   }
 
+  @Transactional
   @Override
   public CommentDTO addComment(int advertId, AddCommentDTO addCommentDTO, String username) {
     logger.info("Add comment");
@@ -88,6 +93,7 @@ public class CommentServiceImpl implements CommentService {
     return commentMapper.toDTO(comments);
   }
 
+  @Transactional(readOnly = true)
   @Override
   public List<CommentDTO> getAllAdvertComments(int advertId) {
     List<Comments> commentsList = commentsRepo.findByAdvertId(advertId);
@@ -101,6 +107,7 @@ public class CommentServiceImpl implements CommentService {
     }
   }
 
+  @Transactional
   @Override
   public void deleteComment(int commentId, String username) {
     Comments comment = commentsRepo.findById(commentId).orElseThrow(() -> new AdvertNotFoundException("Не найден комментарий"));

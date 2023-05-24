@@ -19,6 +19,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Ilyas Nigamatullin
@@ -34,6 +35,7 @@ public class CategoryServiceImpl implements CategoryService {
   @Autowired
   private final AdvertMapper advertMapper;
 
+  @Transactional
   @Override
   public Category addCategory(String name, Advert advert) {
     logger.info("add category");
@@ -55,6 +57,7 @@ public class CategoryServiceImpl implements CategoryService {
     return categoryRepo.findByName(name).get();
   }
 
+  @Transactional(readOnly = true)
   @Override
   public Set<ShortAdvertDTO> filterByCategory(FilterCategoryDTO filterCategoryDTO) {
     logger.info("Search by filter");

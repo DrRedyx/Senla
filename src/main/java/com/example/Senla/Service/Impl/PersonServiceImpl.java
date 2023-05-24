@@ -15,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Ilyas Nigamatullin
@@ -29,6 +30,7 @@ public class PersonServiceImpl implements PersonService {
   @Autowired
   private final PersonMapper personMapper;
 
+  @Transactional(readOnly = true)
   @Override
   public List<PersonDTO> getAllPersons() {
     logger.info("Get all persons");
@@ -36,6 +38,7 @@ public class PersonServiceImpl implements PersonService {
     return personMapper.toDtoList(personList);
   }
 
+  @Transactional
   @Override
   public PersonDTO updatePerson(String username, UpdatePersonDTO personDTO) {
     Person person = personRepo.findByUsername(username).orElseThrow(() -> new UserNotFoundException("User not found"));
@@ -46,18 +49,21 @@ public class PersonServiceImpl implements PersonService {
     return personMapper.toDTO(person);
   }
 
+  @Transactional
   @Override
   public void deletePerson(int id) {
     logger.info("delete person");
     personRepo.deleteById(id);
   }
 
+  @Transactional(readOnly = true)
   @Override
   public PersonDTO getMe(String username) {
     logger.info("Get me");
     return personMapper.toDTO(personRepo.findByUsername(username).get());
   }
 
+  @Transactional(readOnly = true)
   @Override
   public PersonDTO getById(int id) {
     logger.info("get person by id");

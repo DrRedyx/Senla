@@ -23,6 +23,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Ilyas Nigamatullin
@@ -46,6 +47,7 @@ public class AdvertServiceImpl implements AdvertService {
   }
 
 
+  @Transactional
   @Override
   public void saveAdvert(AdvertDTO advertDTO, String username) {
     logger.info("Save advert");
@@ -58,6 +60,7 @@ public class AdvertServiceImpl implements AdvertService {
     advertRepo.save(saveAdvert);
   }
 
+  @Transactional
   @Override
   public void updateAdvert(int id, AdvertDTO advertDTO, String username) {
     Advert updateAdvert = advertRepo.findById(id).orElseThrow(() -> new AdvertNotFoundException("Advert not found"));
@@ -82,12 +85,13 @@ public class AdvertServiceImpl implements AdvertService {
     advert.setCategorySet(categorySet);
   }
 
+  @Transactional(readOnly = true)
   @Override
   public List<ShortAdvertDTO> getAllAdverts() {
     logger.info("Get adverts");
     return advertMapper.advertEntityListToShortAdvertDTOList(advertRepo.getAllActualAdverts());
   }
-
+  @Transactional
   @Override
   public void deleteAdvert(int id, String username) {
     Advert advert = advertRepo.findById(id).orElseThrow(() -> new AdvertNotFoundException("Advert not found"));
@@ -99,6 +103,7 @@ public class AdvertServiceImpl implements AdvertService {
     }
   }
 
+  @Transactional
   @Override
   public FullAdvertDto getAdvert(int id){
     Advert advert = advertRepo.findById(id).orElseThrow(() -> new AdvertNotFoundException("Advert not found"));
@@ -106,6 +111,7 @@ public class AdvertServiceImpl implements AdvertService {
     return advertMapper.entityToFullAdvertDTO(advert);
   }
 
+  @Transactional
   @Override
   public void saleAdvert(int id, String username) {
     Advert advert = advertRepo.findById(id).orElseThrow(() -> new AdvertNotFoundException("Advert not found"));
@@ -119,6 +125,7 @@ public class AdvertServiceImpl implements AdvertService {
     }
   }
 
+  @Transactional
   @Override
   public void paidAdvertToTop(int id, String username) {
     Advert advert = advertRepo.findById(id).orElseThrow(() -> new AdvertNotFoundException("Advert not found"));
@@ -132,6 +139,7 @@ public class AdvertServiceImpl implements AdvertService {
     }
   }
 
+  @Transactional(readOnly = true)
   @Override
   public List<ShortAdvertDTO> getAllMyAdvert(String username) {
     logger.info("Get my adverts");
@@ -146,6 +154,7 @@ public class AdvertServiceImpl implements AdvertService {
     }
   }
 
+  @Transactional(readOnly = true)
   @Override
   public List<ShortAdvertDTO> searchAdverts(SearchAdvertDTO searchAdvertDTO) {
     logger.info("Search adverts");
