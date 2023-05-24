@@ -1,5 +1,6 @@
 package com.example.Senla.Service.Impl;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -115,7 +116,7 @@ public class AdvertServiceImpl implements AdvertService {
       advertRepo.save(advert);
     }
     else {
-      throw new AccessDenied("Это не ваше объявление");
+      throw new AccessDenied("Вы не можете купить своё объявление");
     }
   }
 
@@ -138,7 +139,7 @@ public class AdvertServiceImpl implements AdvertService {
     Person person = personRepo.findByUsername(username).get();
     List<Advert> advertList = advertRepo.getAllByPersonId(person.getId());
     if (advertList == null) {
-      throw new AdvertNotFoundException("У вас еще нет объявлений");
+      return new ArrayList<>();
     }
     else {
       List<ShortAdvertDTO> advertDTOS = advertMapper.advertEntityListToShortAdvertDTOList(advertList);
@@ -151,5 +152,17 @@ public class AdvertServiceImpl implements AdvertService {
     logger.info("Search adverts");
     return advertMapper.advertEntityListToShortAdvertDTOList(
         advertRepo.getAdvertsByTitleContains(searchAdvertDTO.getTitle()));
+  }
+
+  @Override
+  public List<ShortAdvertDTO> getMySaleAdverts(String username) {
+    List<Advert> sales = advertRepo.getAllMySaleAdvert(
+        personRepo.findByUsername(username).get().getId());
+    if (sales == null) {
+      return new ArrayList<>();
+    }
+    else {
+      return advertMapper.advertEntityListToShortAdvertDTOList(sales);
+    }
   }
 }
