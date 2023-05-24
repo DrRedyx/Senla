@@ -77,3 +77,7 @@ CREATE TABLE advert_category
 
 INSERT INTO role(name) VALUES ('ROLE_USER'), ('ROLE_ADMIN');
 
+INSERT INTO person(username, password) VALUES ('admin', 'admin');
+
+INSERT INTO person_role VALUES (1, 2)
+
