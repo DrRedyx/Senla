@@ -29,6 +29,6 @@ public class AdminController {
   @DeleteMapping("{id}/delete")
   public ResponseEntity<?> deletePerson(@PathVariable int id) {
     personService.deletePerson(id);
-    return ResponseEntity.ok("Delete person");
+    return ResponseEntity.ok().build();
   }
 }

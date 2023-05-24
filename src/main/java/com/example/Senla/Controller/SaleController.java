@@ -27,6 +27,6 @@ public class SaleController {
   public ResponseEntity<?> saleAdvert(@PathVariable("advert_id") int advertId) {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     advertService.saleAdvert(advertId, authentication.getName());
-    return ResponseEntity.ok("Спасибо за покупку на нашем сервисе");
+    return ResponseEntity.ok().build();
   }
 }

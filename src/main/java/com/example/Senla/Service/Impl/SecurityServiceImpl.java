@@ -57,7 +57,7 @@ public class SecurityServiceImpl implements SecurityService {
   }
 
   @Override
-  public Boolean register(RegisterDTO registerDTO) {
+  public void register(RegisterDTO registerDTO) {
     if (personRepo.findByUsername(registerDTO.getUsername()).isPresent()) {
       throw new UserIsAlreadyExists("This email is already exists: " + registerDTO.getUsername());
     }
@@ -88,7 +88,6 @@ public class SecurityServiceImpl implements SecurityService {
       gradeRepo.save(grade);
       personRepo.save(person);
       roleRepo.save(role);
-      return true;
     }
   }
 }

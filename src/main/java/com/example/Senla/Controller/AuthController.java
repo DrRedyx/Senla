@@ -2,6 +2,7 @@ package com.example.Senla.Controller;
 
 import com.example.Senla.DTO.LoginDTO;
 import com.example.Senla.DTO.RegisterDTO;
+import com.example.Senla.DTO.TokenDTO;
 import com.example.Senla.Security.JWTUtil;
 import com.example.Senla.Service.SecurityService;
 import lombok.AllArgsConstructor;
@@ -26,24 +27,19 @@ public class AuthController {
   private final JWTUtil jwtUtil;
 
   @PostMapping("/register")
-  public ResponseEntity<String> registration(@RequestBody RegisterDTO registerDTO) {
-    if (securityService.register(registerDTO)) {
-      String token = jwtUtil.generateAccessToken(registerDTO.getUsername());
-      return ResponseEntity.ok(token);
-    }
-    else {
-      return ResponseEntity.ok("invalid token");
-    }
+  public ResponseEntity<?> registration(@RequestBody RegisterDTO registerDTO) {
+    securityService.register(registerDTO);
+    return ResponseEntity.ok().build();
   }
 
   @PostMapping("/login")
-  public ResponseEntity<String> login(@RequestBody LoginDTO loginDTO) {
+  public ResponseEntity<TokenDTO> login(@RequestBody LoginDTO loginDTO) {
+    String token = null;
+    TokenDTO tokenDTO = new TokenDTO();
     if (securityService.login(loginDTO)) {
-      String token = jwtUtil.generateAccessToken(loginDTO.getUsername());
-      return ResponseEntity.ok(token);
+      token = jwtUtil.generateAccessToken(loginDTO.getUsername());
+      tokenDTO.setToken(token);
     }
-    else {
-      return ResponseEntity.ok("This user already bean registered");
-    }
+    return ResponseEntity.ok(tokenDTO);
   }
 }

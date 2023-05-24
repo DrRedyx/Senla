@@ -25,6 +25,6 @@ public class GradeController {
   @PostMapping("{person_id}/add/{grade}")
   public ResponseEntity<?> addGradeToPerson(@PathVariable("person_id") int personId, @PathVariable int grade) {
     gradeService.addGrade(personId, grade);
-    return ResponseEntity.ok("Спасибо за то что поставили оценку");
+    return ResponseEntity.ok().build();
   }
 }

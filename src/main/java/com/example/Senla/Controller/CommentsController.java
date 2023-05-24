@@ -47,8 +47,7 @@ public class CommentsController {
   public ResponseEntity<?> deleteComment(@PathVariable int comment_id) {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     commentService.deleteComment(comment_id, authentication.getName());
-    return ResponseEntity.ok("Комментарий удалён");
-  }
+    return ResponseEntity.ok().build();  }
 
   @GetMapping("/my_comments")
   public ResponseEntity<List<CommentDTO>> getMyComments() {

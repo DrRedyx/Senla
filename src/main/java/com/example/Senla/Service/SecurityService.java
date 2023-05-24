@@ -11,5 +11,5 @@ public interface SecurityService {
 
   Boolean login(LoginDTO loginDTO);
 
-  Boolean register(RegisterDTO registerDTO);
+  void register(RegisterDTO registerDTO);
 }
