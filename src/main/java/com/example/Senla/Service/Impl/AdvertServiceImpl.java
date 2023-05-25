@@ -13,7 +13,6 @@ import com.example.Senla.Entity.Category;
 import com.example.Senla.Entity.Person;
 import com.example.Senla.Exception.AccessDenied;
 import com.example.Senla.Exception.AdvertNotFoundException;
-import com.example.Senla.Exception.UserNotFoundException;
 import com.example.Senla.Mapper.AdvertMapper;
 import com.example.Senla.Repository.AdvertRepo;
 import com.example.Senla.Repository.PersonRepo;
@@ -22,6 +21,7 @@ import com.example.Senla.Service.CategoryService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 /**
@@ -83,9 +83,9 @@ public class AdvertServiceImpl implements AdvertService {
   }
 
   @Override
-  public List<ShortAdvertDTO> getAllAdverts() {
+  public List<ShortAdvertDTO> getAllAdverts(PageRequest pageRequest) {
     logger.info("Get adverts");
-    return advertMapper.advertEntityListToShortAdvertDTOList(advertRepo.getAllActualAdverts());
+    return advertMapper.advertEntityListToShortAdvertDTOList(advertRepo.getAllActualAdverts(pageRequest));
   }
 
   @Override

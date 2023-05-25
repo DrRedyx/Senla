@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.example.Senla.Entity.Advert;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -21,7 +22,7 @@ public interface AdvertRepo extends JpaRepository<Advert, Integer> {
                  + " LEFT JOIN p.grade g "
                  + "WHERE a.isActual = true "
                  + "ORDER BY a.isPaid DESC, g.averageGrade desc")
-  List<Advert> getAllActualAdverts();
+  List<Advert> getAllActualAdverts(PageRequest of);
 
   List<Advert> getAllByPersonId(int id);
 
