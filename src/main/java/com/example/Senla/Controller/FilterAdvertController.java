@@ -5,6 +5,7 @@ import java.util.Set;
 import com.example.Senla.DTO.FilterCategoryDTO;
 import com.example.Senla.DTO.ShortAdvertDTO;
 import com.example.Senla.Service.CategoryService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/filter")
 @AllArgsConstructor
+@Tag(name = "Filter by category")
 public class FilterAdvertController {
 
   @Autowired

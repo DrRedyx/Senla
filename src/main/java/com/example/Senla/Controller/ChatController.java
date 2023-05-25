@@ -4,6 +4,8 @@ import java.util.List;
 
 import com.example.Senla.DTO.MessageDTO;
 import com.example.Senla.Service.ChatService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -21,12 +23,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/chat")
 @AllArgsConstructor
+@Tag(name = "Chat")
 public class ChatController {
 
   @Autowired
   private final ChatService chatService;
 
   @GetMapping("/{recipient_person_id}")
+  @Operation(summary = "Get chat by you and seller")
   public ResponseEntity<List<MessageDTO>> getChat(@PathVariable("recipient_person_id") int recipientPersonId) {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     return ResponseEntity.ok(
