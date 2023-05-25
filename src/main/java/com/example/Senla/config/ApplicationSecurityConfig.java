@@ -1,6 +1,6 @@
 package com.example.Senla.config;
 
-import com.example.Senla.Repository.PersonRepo;
+import com.example.Senla.repository.PersonRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
