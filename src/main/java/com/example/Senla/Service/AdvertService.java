@@ -6,6 +6,7 @@ import com.example.Senla.DTO.AdvertDTO;
 import com.example.Senla.DTO.FullAdvertDto;
 import com.example.Senla.DTO.SearchAdvertDTO;
 import com.example.Senla.DTO.ShortAdvertDTO;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 /**
@@ -18,7 +19,7 @@ public interface AdvertService {
 
   void updateAdvert(int id, AdvertDTO advertDTO, String username);
 
-  List<ShortAdvertDTO> getAllAdverts();
+  List<ShortAdvertDTO> getAllAdverts(PageRequest of);
 
   void deleteAdvert(int id, String username);
 

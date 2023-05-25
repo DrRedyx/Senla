@@ -3,6 +3,7 @@ package com.example.Senla.Controller;
 import java.util.List;
 
 import com.example.Senla.DTO.FullAdvertDto;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.Authentication;
 import com.example.Senla.DTO.AdvertDTO;
 import com.example.Senla.DTO.ShortAdvertDTO;
@@ -34,8 +35,10 @@ public class AdvertController {
   }
 
   @GetMapping
-  public ResponseEntity<List<ShortAdvertDTO>> getAllAdverts() {
-    return ResponseEntity.ok(advertService.getAllAdverts());
+  public ResponseEntity<List<ShortAdvertDTO>> getAllAdverts(
+      @RequestParam(required = false, defaultValue = "0") int page,
+      @RequestParam(required = false, defaultValue = "10") int size) {
+    return ResponseEntity.ok(advertService.getAllAdverts(PageRequest.of(page, size)));
   }
 
   @PatchMapping(path = "/{id}/update")
