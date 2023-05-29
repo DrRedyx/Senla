@@ -66,6 +66,12 @@ public class AdvertController {
     return ResponseEntity.ok(advertService.getAllMyAdvert(authentication.getName()));
   }
 
+  @GetMapping("/my/sale")
+  public ResponseEntity<List<ShortAdvertDTO>> getAllMySales() {
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    return ResponseEntity.ok(advertService.getMySaleAdverts(authentication.getName()));
+  }
+
   @GetMapping("/{id}")
   @Operation(summary = "Get advert by id")
   public ResponseEntity<FullAdvertDto> getAdvert(@PathVariable int id) {

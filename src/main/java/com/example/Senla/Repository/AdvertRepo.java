@@ -23,6 +23,10 @@ public interface AdvertRepo extends JpaRepository<Advert, Integer> {
                  + "ORDER BY a.isPaid DESC, g.averageGrade desc")
   List<Advert> getAllActualAdverts();
 
+  @Query(value = "SELECT * FROM Advert a WHERE a.person_id = ?1 AND a.is_sale = true",
+      nativeQuery = true)
+  List<Advert> getAllMySaleAdvert(int id);
+
   List<Advert> getAllByPersonId(int id);
 
   List<Advert> getAdvertsByTitleContains(String title);

@@ -32,5 +32,5 @@ public interface AdvertService {
 
   List<ShortAdvertDTO> searchAdverts(SearchAdvertDTO searchAdvertDTO);
 
-
+  List<ShortAdvertDTO> getMySaleAdverts(String username);
 }
