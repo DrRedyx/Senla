@@ -1,6 +1,8 @@
 package com.example.Senla.Controller;
 
 import com.example.Senla.Service.AdvertService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,12 +20,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/buy")
 @AllArgsConstructor
+@Tag(name = "Top to advert")
 public class BuyTopController {
 
   @Autowired
   private final AdvertService advertService;
 
   @PatchMapping("/top/{advert_id}")
+  @Operation(summary = "Buy advert to top")
   public ResponseEntity<?> buyAdvertToTop(@PathVariable("advert_id") int advertId) {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     advertService.paidAdvertToTop(advertId, authentication.getName());
