@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Ilyas Nigamatullin
@@ -26,6 +27,7 @@ public class GradeServiceImpl implements GradeService {
   @Autowired
   private final PersonRepo personRepo;
 
+  @Transactional(readOnly = true)
   @Override
   public GradeDTO getGrade(int personId) {
     logger.info("Get grade");
@@ -41,6 +43,7 @@ public class GradeServiceImpl implements GradeService {
     }
   }
 
+  @Transactional
   @Override
   public void addGrade(int personId, int grade) {
     Person person = personRepo.findById(personId).orElseThrow(RuntimeException::new);

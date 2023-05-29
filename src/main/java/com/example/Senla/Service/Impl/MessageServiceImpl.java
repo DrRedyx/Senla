@@ -20,6 +20,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Ilyas Nigamatullin
@@ -36,6 +37,7 @@ public class MessageServiceImpl implements MessageService {
   @Autowired
   private final PersonRepo personRepo;
 
+  @Transactional
   @Override
   public MessageDTO sendMessage(String createPerson, int recipientPersonId,
       SendMessageDTO sendMessageDTO) {
@@ -50,6 +52,7 @@ public class MessageServiceImpl implements MessageService {
     return messageMapper.toDTO(message);
   }
 
+  @Transactional(readOnly = true)
   @Override
   public List<MessageDTO> getAllMyNewMessages(String username) {
     int recipientPersonId = personRepo.findByUsername(username).get().getId();
@@ -64,6 +67,7 @@ public class MessageServiceImpl implements MessageService {
     }
   }
 
+  @Transactional
   @Override
   public MessageDTO getMessage(int id, String username) {
     Messages messages = messagesRepo.findById(id).orElseThrow(RuntimeException::new);

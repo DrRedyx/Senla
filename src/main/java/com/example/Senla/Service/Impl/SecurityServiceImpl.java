@@ -44,7 +44,7 @@ public class SecurityServiceImpl implements SecurityService {
   @Autowired
   private final AuthenticationManager authenticationManager;
 
-  @Transactional
+  @Transactional(readOnly = true)
   @Override
   public Boolean login(LoginDTO loginDTO) {
     authenticationManager.authenticate(
@@ -56,6 +56,7 @@ public class SecurityServiceImpl implements SecurityService {
     return true;
   }
 
+  @Transactional
   @Override
   public Boolean register(RegisterDTO registerDTO) {
     if (personRepo.findByUsername(registerDTO.getUsername()).isPresent()) {
