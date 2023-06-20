@@ -66,13 +66,7 @@ public class SecurityServiceImpl implements SecurityService {
       Person person = personMapper.toEntity(registerDTO);
       person.setPassword(passwordEncoder.encode(registerDTO.getPassword()));
       Set<Role> roles = new HashSet<>();
-      Role role = new Role();
-      if (person.getUsername().equals("admin@example.com")) {
-        role = roleRepo.findByName("ROLE_ADMIN");
-      }
-      else {
-        role = roleRepo.findByName("ROLE_USER");
-      }
+      Role role = roleRepo.findByName("ROLE_USER");
       Set<Person> personSet = role.getPersonSet();
       if (personSet == null) {
         personSet = new HashSet<>();
